@@ -1,14 +1,16 @@
-`include "Decoder3to8.v"
+`timescale 1ns/1ns
+`include "op_de.v"
 
-module Decoder3to8_tb;
+
+module op_de_tb;
 reg A,B,C;
 wire [7:0]Out;
 
-Decoder3to8 uut(A,B,C,Out);
+op_de uut(A,B,C,Out);
 
 initial begin
-    $dumpfile("Decoder3to8_test.vcd");
-    $dumpvars(0,Decoder3to8_tb);
+    $dumpfile("op_de_tb.vcd");
+    $dumpvars(0,op_de_tb);
 
     $monitor(A,B,C,Out);
     A = 0; B = 0; C = 0; #20;
