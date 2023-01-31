@@ -11,7 +11,7 @@ initial begin
     $dumpfile("mux.vcd");
     $dumpvars(0,mux_tb);
     $monitor(c0);
-    i0=0;i1=1;
+    i0=1;i1=0;
     p0=1;#5
     p0=0;#5;
 
