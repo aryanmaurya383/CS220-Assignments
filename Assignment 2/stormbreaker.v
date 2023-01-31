@@ -31,7 +31,7 @@ generate
         b_bit_new b1(a_reg[i+B-1:i],b_reg[i+B-1:i],crr_temp[i],sum_wire[i+B-1:i], p0_wire, crr_temp[i+B]);
         mux2to1 m1(crr_temp[i], crr_temp[i+B],p0_wire,crr_temp[i+B]);
         // $monitor(crr_temp[i]);
-        assign crr_temp[i+B]=temp;
+        // assign crr_temp[i+B]=temp;
         assign cout_wire=crr_temp[i+B];
      end
      endgenerate
