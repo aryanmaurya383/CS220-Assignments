@@ -3,36 +3,41 @@
 `include "mux2to1.v"
 `define MAX 128
 
-module stormbreaker(a,b,sum,p0,cout);
+module stormbreaker(clk,a,b,sum,p0,cout);
 parameter B=4;
+input clk;
 input [`MAX-1:0]a,b;
 output reg[`MAX-1:0]sum;
 output reg p0,cout;
 
 reg [`MAX-1:0]a_reg,b_reg;
 wire [`MAX-1:0]sum_wire;
-wire p0_wire,cout_wire;
-wire crr_temp[`MAX:0];
-reg crr_reg[`MAX:0];
+wire cout_wire;
+wire [`MAX:0]crr_temp,p0_temp,real_crr;
+reg [`MAX:0]crr_reg,p0_reg;
 
-always @(*) begin:alw1
+
+
+always @(posedge clk) begin:alw1
     a_reg<=a;
     b_reg<=b;
     sum<=sum_wire;
-    p0<=p0_wire;
+    p0_reg<=p0_temp;
     cout<=cout_wire;
     // crr_reg<=crr_temp;
+// $display(a_reg,b_reg,real_crr,sum_wire,p0_temp,crr_temp);
+
 end
 wire temp;
-assign crr_temp[0]=0;
+assign real_crr[0]=0;
 generate
      genvar i;
      for(i=0;i!=`MAX;i=i+B) begin:for1
-        b_bit_new b1(a_reg[i+B-1:i],b_reg[i+B-1:i],crr_temp[i],sum_wire[i+B-1:i], p0_wire, crr_temp[i+B]);
-        mux2to1 m1(crr_temp[i], crr_temp[i+B],p0_wire,crr_temp[i+B]);
+        b_bit_new b1(a_reg[i+B-1:i],b_reg[i+B-1:i],real_crr[i],sum_wire[i+B-1:i], p0_temp[i], crr_temp[i+B]);
+        mux2to1 m1(crr_temp[i+B],real_crr[i],p0_reg[i],real_crr[i+B]);
         // $monitor(crr_temp[i]);
         // assign crr_temp[i+B]=temp;
-        assign cout_wire=crr_temp[i+B];
+        assign cout_wire=real_crr[i+B];
      end
      endgenerate
 

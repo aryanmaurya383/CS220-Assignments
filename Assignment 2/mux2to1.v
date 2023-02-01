@@ -3,8 +3,7 @@
 module mux2to1(i0,i1,p0,c0);
 input wire i0,i1,p0;
 output c0;
-
-assign c0 = ((~p0)&i0 )| (p0&i1);
+assign c0 = (((~p0)&i0 )| (p0&i1));
 
 endmodule;
 
