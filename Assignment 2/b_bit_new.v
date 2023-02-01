@@ -1,5 +1,5 @@
 module b_bit_new(a,b, cin,sum,p0,cout);
-parameter B=4;
+parameter B=32;
 
 input [B-1:0] a,b;
 input cin;

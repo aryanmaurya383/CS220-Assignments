@@ -4,7 +4,7 @@
 
 module storm_tb();
 
-parameter B=16;
+parameter B=32;
 reg[`MAX-1:0] a,b;
 wire [`MAX-1:0]sum;
 wire cout,p0;

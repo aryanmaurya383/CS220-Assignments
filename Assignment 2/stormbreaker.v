@@ -4,7 +4,7 @@
 `define MAX 128
 
 module stormbreaker(clk,a,b,sum,p0,cout);
-parameter B=4;
+parameter B=32;
 input clk;
 input [`MAX-1:0]a,b;
 output reg[`MAX-1:0]sum;
