@@ -1,58 +1,72 @@
-`timescale 1ns/1ns
+`timescale 1ns / 1ns
+`include "T_FF.v"
 
- module mod10counter(clk,reset,q);
- input clk,reset;
- reg [3:0]state,nextstate;
- output reg [3:0]q;
- reg [26:0]counter;
-//----------Next state logic------
-always@(posedge clk) begin:next_state
-if(reset)begin
-    counter<=0;
-    nextstate<=0;
+
+module mod10counter(q_reg, clk,reset);
+
+parameter W=50_000_000;
+
+output reg [3:0] q_reg;
+wire [3:0]q;
+input clk, reset;
+reg reset_reg;
+reg [31:0]one_sec_counter;
+initial begin
+    reset_reg=1;
+    one_sec_counter<=0;
 end
-// else if(counter==27'd2)begin
-//     counter<=0;
-//     if(state<9) begin
-//         nextstate<=state+1;
-//     end
-//     else begin
-//         nextstate<=0;
-//     end 
-// end
-// else begin
-//     counter<=counter+1;
-// end
-else begin
-    if(state<9) begin
-        nextstate<=state+1;
+
+always @(posedge clk ) begin
+    if(reset_reg)begin
+        one_sec_counter=32'b0;
     end
     else begin
-        nextstate<=0;
-    end 
-end
+        if(one_sec_counter==W)begin
+            one_sec_counter=32'b0;
+        end
+        else begin 
+            one_sec_counter=one_sec_counter+1;
+        end
+    end
 end
 
 
-// --------Sequential logic-------
-always@(posedge clk || reset) begin : seq_logic
-    if(reset) begin
-        state<=0;
+T_FF tff0 (q[0],clk,reset_reg);
+T_FF tff1(q[1],q[0],reset_reg);
+T_FF  tff2 (q[2],q[1], reset_reg);
+T_FF tff3 (q[3], q[2], reset_reg);
+
+always@(*)begin
+    reset_reg=reset;
+end
+
+
+always@(posedge clk )begin
+    reset_reg=reset;
+
+    if(reset_reg==1)begin
+        q_reg<=0;
     end
     else begin
-        state<=nextstate;
+        if(one_sec_counter==W)begin 
+            q_reg<=q;
+            if(q_reg>8)begin
+            assign  reset_reg=1;
+            end
+            else begin
+                assign reset_reg=0;
+            end
+        end
+        else begin
+            q_reg<=q_reg;
+        end
     end
 end
 
-// -------Output logic----------
-always@(posedge clk)begin:output_logic
-    if(reset)begin
-        q<=0;
-    end
-    else begin
-        q<=state;
-    end
-    // $monitor(q);
-end
- endmodule
- 
+
+
+
+endmodule
+
+
+
