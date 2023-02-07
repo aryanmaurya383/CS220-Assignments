@@ -1,10 +1,9 @@
 `timescale 1ns/1ns
-module up_down_counter (
-    clk,reset,Up,count
-);
-input clk,reset,Up;
+module counter (    clk,reset,count);
+input clk,reset;
+wire Up=1;
 output reg [3:0]count=0;
-parameter W=50000000;
+parameter W=50_000_000;
 reg [31:0] inti_counti;
 
 always @(negedge(clk) or posedge(reset) )begin
@@ -36,7 +35,7 @@ always @(negedge(clk) or posedge(reset) )begin
 begin
         if(Up==1)
         begin
-          if(count==15)count=0;
+          if(count==9)count=0;
           else count=count+1;
         end
         else

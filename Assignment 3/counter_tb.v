@@ -1,4 +1,4 @@
-`timescale 1ns / 1ns
+`timescale 1s / 1s
 `include "mod10counter.v"
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -29,19 +29,19 @@ module counter_tb;
 	reg reset;
 
 	// Outputs
-	wire [3:0] q_reg;
+	wire [3:0] q;
 
 	// Instantiate the Unit Under Test (UUT)
 	mod10counter uut (
-		.q_reg(q_reg), 
 		.clk(clk), 
-		.reset(reset)
+		.reset(reset),
+		.q(q) 
 		
 	);
 
 	initial begin
 	clk<=0;
-	forever #10 clk<=~clk;
+	forever #1 clk<=~clk;
 	end
 	
 	initial begin
@@ -49,18 +49,22 @@ module counter_tb;
 		//clk = 0;
         $dumpfile("counter_tb.vcd");
         $dumpvars(0,counter_tb);
-$monitor(reset,q_reg);
+$monitor(reset,q);
 		reset = 1;
 
 		// Wait 100 ns for global reset to finish
-		#10;
+		#20;
        reset = 0; 
 		// Add stimulus here
-#500
+#50
 reset=1;
-#100;
+#20;
 reset=0;
-#100;
+#20;
+#20;
+
+reset=1;
+#200;
 $finish;
 	end
       

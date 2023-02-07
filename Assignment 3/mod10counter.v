@@ -1,23 +1,16 @@
 `timescale 1ns / 1ns
-`include "T_FF.v"
 
+module mod10counter(clk,reset,q);
+// parameter W=50_000_000;
+parameter W=1;
 
-module mod10counter(q_reg, clk,reset);
+input clk,reset;
+output reg [3:0] q;
 
-parameter W=50_000_000;
+reg [31:0] one_sec_counter;
 
-output reg [3:0] q_reg;
-wire [3:0]q;
-input clk, reset;
-reg reset_reg;
-reg [31:0]one_sec_counter;
-initial begin
-    reset_reg=1;
-    one_sec_counter<=0;
-end
-
-always @(posedge clk ) begin
-    if(reset_reg)begin
+always @(posedge (clk) or posedge(reset)) begin: temp1
+    if(reset)begin
         one_sec_counter=32'b0;
     end
     else begin
@@ -30,41 +23,24 @@ always @(posedge clk ) begin
     end
 end
 
-
-T_FF tff0 (q[0],clk,reset_reg);
-T_FF tff1(q[1],q[0],reset_reg);
-T_FF  tff2 (q[2],q[1], reset_reg);
-T_FF tff3 (q[3], q[2], reset_reg);
-
-always@(*)begin
-    reset_reg=reset;
-end
-
-
-always@(posedge clk )begin
-    reset_reg=reset;
-
-    if(reset_reg==1)begin
-        q_reg<=0;
+always @(posedge (clk) or posedge(reset)) begin:temp2
+    if(reset) begin
+        q=0;
     end
-    else begin
-        if(one_sec_counter==W)begin 
-            q_reg<=q;
-            if(q_reg>8)begin
-            assign  reset_reg=1;
+    else begin 
+        if(one_sec_counter==W)begin
+            if(q>=9)begin 
+                q=0;
             end
             else begin
-                assign reset_reg=0;
+                q=q+1;
             end
         end
         else begin
-            q_reg<=q_reg;
+            q=q;
         end
     end
 end
-
-
-
 
 endmodule
 
