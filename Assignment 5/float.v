@@ -2,11 +2,12 @@
 `include "mem1.v"
 
 
-module float(clk,match,ans,correct_ans);
+// module float(clk,match,ans,correct_ans);
+module float(clk,match);
 input wire clk;
 output reg match;
 reg [31:0]first,second;
-output reg [31:0]ans,correct_ans;
+reg [31:0]ans,correct_ans;
 wire [31:0] temp1,temp2,temp3;
 
 // mem1 m1(clk,0,1,0,first,0,temp1);
@@ -22,13 +23,13 @@ reg [24:0] base1,base2,cal_base;
 // correct_ans stored at address 2
 
 initial begin
-  first=32'b0_1000_0010_01010000000000000000000;//10.5
+  first=32'b1_1000_0010_01010000000000000000000;//10.5
 // first=32'b0_1000_1111_11011101011011111100110;//122223.8
   second=32'b0_1000_0000_10100000000000000000000;//3.25
 // second =32'b0_1000_1001_10011010110101110000101;//1643.36
-  correct_ans=32'b0_1000_0010_10111000000000000000000;//13.75
+//   correct_ans=32'b0_1000_0010_10111000000000000000000;//13.75
+correct_ans=32'b1_1000_0001_11010000000000000000000;//7.25
 // correct_ans=32'b0_1000_1111_11100011110110110010100;//123867.16
-// correct_ans=32'b1_1000_0001_11010000000000000000000;//7.25
 end
 
 mem1 m1(clk,1'b0,1'b1,0,first,1'b0,temp1);
