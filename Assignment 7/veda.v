@@ -1,16 +1,16 @@
-module fetch_file(clk, instruction);
+module fetch_file(clk, pc,instruction);
 input  clk;
 output  reg [31:0]instruction;
-
+input wire[7:0] pc;
 reg[4:0] r0,r1,r2;
 reg [15:0]imm;
 reg [31:0]veda_mem[24:0];
 reg [5:0]counter;
 
 initial begin
-r0=5'b0;
-r1=5'b0;
-r2=5'b0;
+r0=5'd0;
+r1=5'd1;
+r2=5'd2;
 imm=16'b0;
 counter=0;
 
@@ -24,8 +24,8 @@ veda_mem[6]=32'b0; veda_mem[6][31:26]=6'b000000;veda_mem[6][25:21]=r1;veda_mem[6
 veda_mem[7]=32'b0; veda_mem[7][31:26]=6'b000000;veda_mem[7][25:21]=r1;veda_mem[7][20:16]=r2;veda_mem[7][15:11]=r0;veda_mem[7][5:0]=6'b100101;//or
 veda_mem[8]=32'b0; veda_mem[8][31:26]=6'b001100;veda_mem[8][25:21]=r1;veda_mem[8][20:16]=r0;veda_mem[8][15:0]=imm;//andi
 veda_mem[9]=32'b0; veda_mem[9][31:26]=6'b001101;veda_mem[9][25:21]=r1;veda_mem[9][20:16]=r0;veda_mem[9][15:0]=imm;//ori
-veda_mem[10]=32'b0; veda_mem[10][31:26]=6'b000000;veda_mem[10][25:21]=r1;veda_mem[10][20:16]=r2;veda_mem[10][15:11]=r0;veda_mem[10][10:6]=5'd10;veda_mem[10][5:0]=6'b000000;//sll
-veda_mem[11]=32'b0; veda_mem[11][31:26]=6'b000000;veda_mem[11][25:21]=r1;veda_mem[11][20:16]=r2;veda_mem[11][15:11]=r0;veda_mem[11][10:6]=5'd10;veda_mem[11][5:0]=6'b000010;//srl
+veda_mem[10]=32'b0; veda_mem[10][31:26]=6'b000000;veda_mem[10][25:21]=5'b0;veda_mem[10][20:16]=r2;veda_mem[10][15:11]=r0;veda_mem[10][10:6]=5'd10;veda_mem[10][5:0]=6'b000000;//sll
+veda_mem[11]=32'b0; veda_mem[11][31:26]=6'b000000;veda_mem[11][25:21]=5'b0;veda_mem[11][20:16]=r2;veda_mem[11][15:11]=r0;veda_mem[11][10:6]=5'd10;veda_mem[11][5:0]=6'b000010;//srl
 veda_mem[12]=32'b0; veda_mem[12][31:26]=6'b100011;veda_mem[12][25:21]=r1;veda_mem[12][20:16]=r0;veda_mem[12][15:0]=16'd10;//lw
 veda_mem[13]=32'b0; veda_mem[13][31:26]=6'b101011;veda_mem[13][25:21]=r1;veda_mem[13][20:16]=r0;veda_mem[13][15:0]=16'd10;//sw
 veda_mem[14]=32'b0; veda_mem[14][31:26]=6'b000100;veda_mem[14][25:21]=r1;veda_mem[14][20:16]=r0;veda_mem[14][15:0]=16'd10;//beq
@@ -42,8 +42,10 @@ veda_mem[24]=32'b0; veda_mem[24][31:26]=6'b001010;veda_mem[24][25:21]=r1;veda_me
 end
 
 always @(posedge clk) begin
-    instruction=veda_mem[counter];
-    counter=counter+1;
+    instruction=veda_mem[pc];
+    $display("pc: ",pc);
+    // counter=counter+1;
+
 end
 
 endmodule;
