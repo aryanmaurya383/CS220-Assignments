@@ -15,7 +15,7 @@ end
 initial begin
     $dumpfile("tb.vcd");
     $dumpvars(0, tb);
-    #50;
+    #2000;
     
     $finish;
 end
