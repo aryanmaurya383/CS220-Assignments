@@ -17,7 +17,7 @@ main:
     # Outer loop (i = n-1 to 0)
     addi $t2, $zero, 0      # i = 0
     outer_loop:
-        beq $t2, $t1, exit  # if i == n-1, exit
+        beq $t2, $t1, exit3  # if i == n-1, exit
         addi $t3, $zero, 0      # j = 0
 
         # Inner loop (j = 0 to n-1-i)
