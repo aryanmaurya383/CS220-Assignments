@@ -1,11 +1,10 @@
+// Code by Maurya Aryan 210595 and Depanshu Sahu 210316
 `include "decide_file.v"
 
 module tb();
 reg clk;
-// wire [31:0]registers32;
 
 decide_file uut(clk);
-// decide_file uut(clk, registers32);
 
 initial begin
     clk=1;
